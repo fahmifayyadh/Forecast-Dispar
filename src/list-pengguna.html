@@ -1,0 +1,100 @@
+{% extends "template.html" %} {% block navbar %} {% include "navbar.html" %} {% endblock %} {% block content %}
+<div class="page-body">
+    <div class="container-fluid">
+        <div class="page-header">
+            <div class="row">
+                <div class="col-6">
+                    <h3>
+                        Data pengguna</h3>
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="index.html"><i data-feather="home"></i></a>
+                        </li>
+                        <li class="breadcrumb-item">Dashboard</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Container-fluid starts-->
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>List data pengguna</h5><span>Data pengguna keseluruhan yang tercatat pada sistem dan dapat mengoperasikan</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead class="thead-dark">
+                                    <th scope="col">ID</th>
+                                    <th scope="col">Username</th>
+                                    <th scope="col">Email</th>
+                                    <th scope="col">Jenis</th>
+                                    <th scope="col">Status</th>
+                                    <th scope="col">Action</th>
+                                </thead>
+                                <tbody id="pengguna">
+                                    <tr>
+
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Container-fluid Ends-->
+</div>
+{% endblock %} {% block js %}
+<script defer src="https://use.fontawesome.com/releases/v6.1.1/js/all.js" integrity="sha384-xBXmu0dk1bEoiwd71wOonQLyH+VpgR1XcDH3rtxrLww5ajNTuMvBdL5SOiFZnNdp" crossorigin="anonymous"></script>
+<script>
+    $(document).ready(() => {
+        var skip = 0;
+        var take = 50;
+        show()
+
+        function show() {
+            $.ajax({
+                method: "get",
+                url: source + 'user/' + skip + '/' + take,
+                data: {
+                    'header': token
+                },
+                dataType: "Json",
+                success: function(data, textStatus, jqXHR) {
+                    var user = data['user']
+                    $.each(user, (index, value) => {
+                        if (value.active == 1) {
+                            var status = `<p class="text-success"><i class="fa-solid fa-circle-check"></i> Aktif</p>`;
+
+                        } else {
+                            var status = `<p class="text-danger"><i class="fa-solid fa-circle-xmark"></i> Nonaktif</p>`;
+                        }
+                        var usr = `<tr>
+                                        <td>` + value.id + `</td>
+                                        <td>` + value.username + `</td>
+                                        <td>` + value.email + `</td>
+                                        <td>` + value.role + `</td>
+                                        <td>` + status + `</td>
+                                        <td>
+                                            <button id="edit" val="` + value.id + `" class="btn btn-primary text-white"><i class="fa-solid fa-pen"></i></button>
+                                            <button id="delete" val="` + value.id + `" class="btn btn-danger text-white"><i class="fa-solid fa-trash"></i></button>
+                                        </td>
+                                    </tr>`
+                        $("#pengguna").append(usr)
+                    })
+
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    alert('error :' + textStatus);
+                    console.log(errorThrown);
+
+                }
+            })
+        }
+    })
+</script>
+{% include "auth.html" %} {% endblock %}

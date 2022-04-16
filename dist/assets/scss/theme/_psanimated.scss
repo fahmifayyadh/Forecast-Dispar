@@ -1,0 +1,12 @@
+.psanimated {
+    width: 24px;
+    height: 24px;
+    display: inline-block;
+    svg,path{
+      stroke: $primary-color;
+    stroke-opacity: 1;
+    stroke-width: 3;
+    fill: $primary-color;
+    }
+
+}

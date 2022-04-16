@@ -1,0 +1,27 @@
+<script>
+    $(document).ready(() => {
+        var value = localStorage.getItem('api_token');
+        var username = localStorage.getItem('username');
+        var role = localStorage.getItem('role')
+
+        function masuk() {
+            location.replace('login.html')
+        }
+
+        function keluar() {
+            localStorage.clear()
+            masuk()
+        }
+
+        if (value == '' || value == null || username == '' || username == null || role == '' || role == null) {
+            masuk()
+        }
+
+        $(".ProfileCard-realName").html(username)
+        $(".ProfileCard-Role").html(role)
+
+        $("#logout").click(() => {
+            keluar()
+        })
+    });
+</script>
