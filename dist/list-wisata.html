@@ -66,8 +66,7 @@
                     <a href="index.html"><img class="img-fluid" src="assets/images/logo/logo-icon.png" alt=""></a>
                 </div>
                 <nav>
-                    
-<div class="main-navbar">
+                     <div class="main-navbar">
     <div class="left-arrow" id="left-arrow"><i data-feather="arrow-left"></i></div>
     <div id="mainnav">
         <ul class="nav-menu custom-scrollbar">
@@ -121,8 +120,7 @@
         </ul>
     </div>
     <div class="right-arrow" id="right-arrow"><i data-feather="arrow-right"></i></div>
-</div>
-
+</div> 
                 </nav>
             </header>
             <!-- Page Sidebar Ends-->
@@ -133,7 +131,7 @@
             <div class="row">
                 <div class="col-6">
                     <h3>
-                        Default</h3>
+                        Destinasi Wisata</h3>
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="index.html"><i data-feather="home"></i></a>
                         </li>
@@ -148,38 +146,31 @@
         <div class="row">
             <div class="col-sm-12">
                 <div class="card">
-                  <div class="card-header">
-                    <h5>Ajax Data Source (Arrays)</h5><span>The example below shows DataTables loading data for a table from arrays as the data source, where the structure of the row's data source in this example is:</span>
-                  </div>
-                  <div class="card-body">
-                    <div class="table-responsive">
-                      <table class="display datatables">
-                        <thead>
-                          <tr>
-                            <th>Name</th>
-                            <th>Position</th>
-                            <th>Office</th>
-                            <th>Age</th>
-                            <th>Start date</th>
-                            <th>Salary</th>
-                          </tr>
-                        </thead>
-                        
-                        <tfoot>
-                          <tr>
-                            <th>Name</th>
-                            <th>Position</th>
-                            <th>Office</th>
-                            <th>Age</th>
-                            <th>Start date</th>
-                            <th>Salary</th>
-                          </tr>
-                        </tfoot>
-                      </table>
+                    <div class="card-header">
+                        <h5>List Wisata</h5><span>List data pariwisata yang terdaftar pada sistem</span>
                     </div>
-                  </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th scope="col">Foto</th>
+                                        <th scope="col">Nama</th>
+                                        <th scope="col">Lokasi</th>
+                                        <th scope="col">Tiket lokal</th>
+                                        <th scope="col">Tiket manca</th>
+                                        <th scope="col">Status</th>
+                                        <th scope="col">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="wisata">
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
-              </div>
+            </div>
         </div>
     </div>
     <!-- Container-fluid Ends-->
@@ -213,20 +204,79 @@
     <script src="assets/js/config.js"></script>
     <!-- Plugins JS start-->
     
+<script defer src="https://use.fontawesome.com/releases/v6.1.1/js/all.js" integrity="sha384-xBXmu0dk1bEoiwd71wOonQLyH+VpgR1XcDH3rtxrLww5ajNTuMvBdL5SOiFZnNdp" crossorigin="anonymous"></script>
 <script>
+    $(document).ready(() => {
+        var skip = 0;
+        var take = 50;
+        show()
+
+        function show() {
+            $.ajax({
+                method: "get",
+                url: source + 'place/' + skip + '/' + take,
+                data: {
+                    'header': token
+                },
+                dataType: "Json",
+                success: function(data, textStatus, jqXHR) {
+                    var place = data['data']
+                    $.each(place, (index, value) => {
+                        if (value.active == 1) {
+                            var status = `<p class="text-success"><i class="fa-solid fa-circle-check"></i> Aktif</p>`;
+
+                        } else {
+                            var status = `<p class="text-danger"><i class="fa-solid fa-circle-xmark"></i> Nonaktif</p>`;
+                        }
+
+                        if (value.image == null) {
+                            var image = `<img src="https://i.pinimg.com/originals/ae/8a/c2/ae8ac2fa217d23aadcc913989fcc34a2.png" alt="foto wisata" sizes="40" style="width:100px; object-fit: cover;">`
+                        } else {
+                            var image = `<img src="` +protocol+domain+'storage'+ value.image.split("public")[1] + `" alt="foto wisata" style="width:100px; object-fit: cover;">`
+                        }
+                        var wisata = `<tr>
+                                        <td>` + image + `</td>
+                                        <td>` + value.name + `</td>
+                                        <td>` + value.location + `</td>
+                                        <td> Rp.` + value.fee_local + `</td>
+                                        <td> Rp.` + value.fee_inter + `</td>
+                                        <td>` + status + `</td>
+                                        <td>
+                                            <button id="edit" val="` + value.id + `" class="btn btn-primary text-white"><i class="fa-solid fa-pen"></i></button>
+                                            <button id="delete" val="` + value.id + `" class="btn btn-danger text-white"><i class="fa-solid fa-trash"></i></button>
+                                        </td>
+                                    </tr>`
+                        $("#wisata").append(wisata)
+                    })
+
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    alert('error :' + textStatus);
+                    console.log(errorThrown);
+                    if(jqXHR.status ==401){
+                        keluar()
+                    }
+                }
+            })
+        }
+    })
+</script>
+<script>
+    function keluar() {
+        localStorage.clear()
+        masuk()
+    }
+
+    function masuk() {
+        location.replace('login.html')
+    }
+
     $(document).ready(() => {
         var value = localStorage.getItem('api_token');
         var username = localStorage.getItem('username');
         var role = localStorage.getItem('role')
 
-        function masuk() {
-            location.replace('login.html')
-        }
 
-        function keluar() {
-            localStorage.clear()
-            masuk()
-        }
 
         if (value == '' || value == null || username == '' || username == null || role == '' || role == null) {
             masuk()
@@ -240,8 +290,6 @@
         })
     });
 </script>
-    <script src="assets/js/datatable/datatables/jquery.dataTables.min.js"></script>
-    <script src="assets/js/datatable/datatables/datatable.custom.js"></script>
 
     <!-- Plugins JS Ends-->
     <!-- Theme js-->

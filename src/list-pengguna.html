@@ -48,7 +48,7 @@
     </div>
     <!-- Container-fluid Ends-->
 </div>
-{% endblock %} {% block js %}
+{% endblock %} {% block js %} {% include "auth.html" %}
 <script defer src="https://use.fontawesome.com/releases/v6.1.1/js/all.js" integrity="sha384-xBXmu0dk1bEoiwd71wOonQLyH+VpgR1XcDH3rtxrLww5ajNTuMvBdL5SOiFZnNdp" crossorigin="anonymous"></script>
 <script>
     $(document).ready(() => {
@@ -90,11 +90,18 @@
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     alert('error :' + textStatus);
+                    if (jqXHR.status = 401) {
+                        keluar()
+                    }
                     console.log(errorThrown);
 
                 }
             })
         }
+
+        function edit(id) {
+            window.location.replace('');
+        }
     })
 </script>
-{% include "auth.html" %} {% endblock %}
+{% endblock %}

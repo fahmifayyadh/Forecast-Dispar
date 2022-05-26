@@ -91,7 +91,7 @@
             }
         })
 
-        $("#formulir").submit((e) => {
+        $("form#formulir").submit((e) => {
             var pass = $("#password").val();
             var repass = $("#repassword").val();
             if (pass == repass) {
@@ -129,4 +129,4 @@
 
     })
 </script>
-{% endblock %}
+{% include "auth.html" %} {% endblock %}

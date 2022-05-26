@@ -245,7 +245,7 @@
             }
         })
 
-        $("#formulir").submit((e) => {
+        $("form#formulir").submit((e) => {
             var pass = $("#password").val();
             var repass = $("#repassword").val();
             if (pass == repass) {
@@ -283,7 +283,35 @@
 
     })
 </script>
+<script>
+    function keluar() {
+        localStorage.clear()
+        masuk()
+    }
 
+    function masuk() {
+        location.replace('login.html')
+    }
+
+    $(document).ready(() => {
+        var value = localStorage.getItem('api_token');
+        var username = localStorage.getItem('username');
+        var role = localStorage.getItem('role')
+
+
+
+        if (value == '' || value == null || username == '' || username == null || role == '' || role == null) {
+            masuk()
+        }
+
+        $(".ProfileCard-realName").html(username)
+        $(".ProfileCard-Role").html(role)
+
+        $("#logout").click(() => {
+            keluar()
+        })
+    });
+</script> 
     <!-- Plugins JS Ends-->
     <!-- Theme js-->
     <script src="assets/js/script.js"></script>

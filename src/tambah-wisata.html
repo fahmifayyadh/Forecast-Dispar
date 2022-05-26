@@ -5,7 +5,7 @@
             <div class="row">
                 <div class="col-6">
                     <h3>
-                        Default</h3>
+                        Destinasi Wisata</h3>
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="index.html"><i data-feather="home"></i></a>
                         </li>
@@ -21,45 +21,40 @@
             <div class="col-sm-12">
                 <div class="card">
                     <div class="card-body">
-                        <div class="form-group">
-                            <label for="nama">Nama destinasi wisata</label>
-                            <input type="text" name="nama" id="nama" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <label for="image">Foto destinasi</label>
-                            <input type="file" name="image" id="image" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <label for="location">Lokasi destinasi wisata</label>
-                            <input type="text" name="location" id="location" class="form-control">
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6 mb-6">
-                                <label for="lokal">Harga tiket lokal</label>
-                                <div class="input-group">
-                                    <div class="input-group-prepend"><span class="input-group-text" id="inputGroupPrepend">Rp.</span></div>
-                                    <input class="form-control" id="lokal" type="text" name="local" placeholder="Harga" aria-describedby="inputGroupPrepend" required="" data-original-title="" title="">
-                                    <div class="invalid-feedback">Masukkan harga lokal.</div>
+                        <form id="formulir">
+                            <input type="hidden" name="token" id="token" value="">
+                            <div class="form-group">
+                                <label for="nama">Nama destinasi wisata</label>
+                                <input type="text" name="name" id="name" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="image">Foto destinasi</label>
+                                <input type="file" name="image" id="image" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="location">Lokasi destinasi wisata</label>
+                                <input type="text" name="location" id="location" class="form-control" required>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-6">
+                                    <label for="lokal">Harga tiket lokal</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend"><span class="input-group-text" id="inputGroupPrepend">Rp.</span></div>
+                                        <input class="form-control" id="fee_local" type="text" name="fee_local" placeholder="Harga" aria-describedby="inputGroupPrepend" required="" data-original-title="" title="">
+                                        <div class="invalid-feedback">Masukkan harga lokal.</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-6">
+                                    <label for="inter">Harga tiket internasional</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend"><span class="input-group-text" id="inputGroupPrepend">Rp.</span></div>
+                                        <input class="form-control" id="fee_inter" type="text" name="fee_inter" placeholder="Harga" aria-describedby="inputGroupPrepend" required="" data-original-title="" title="">
+                                        <div class="invalid-feedback">Masukkan harga internasional.</div>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-md-6 mb-6">
-                                <label for="inter">Harga tiket internasional</label>
-                                <div class="input-group">
-                                    <div class="input-group-prepend"><span class="input-group-text" id="inputGroupPrepend">Rp.</span></div>
-                                    <input class="form-control" id="inter" type="text" name="inter" placeholder="Harga" aria-describedby="inputGroupPrepend" required="" data-original-title="" title="">
-                                    <div class="invalid-feedback">Masukkan harga internasional.</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="status">Status destinasi wisata</label>
-                            <select name="status" id="status" class="form-control">
-                                <option value="1">Aktif</option>
-                                <option value="0">Non-aktif</option>
-                            </select>
-                        </div>
-
-                        <button type="submit" class="col-12 btn btn-primary">Simpan</button>
+                            <button type="submit" id="submit" class="col-12 btn btn-primary">Simpan</button>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -67,7 +62,37 @@
     </div>
     <!-- Container-fluid Ends-->
 </div>
-{% endblock %} {% block js %}
-<script src="assets/js/datatable/datatables/jquery.dataTables.min.js"></script>
-<script src="assets/js/datatable/datatables/datatable.custom.js"></script>
+{% endblock %} {% block js %} {% include "auth.html" %}
+<script>
+    $(document).ready(() => {
+        $("#token").val(token);
+
+        $("form#formulir").submit((e) => {
+            e.preventDefault()
+            $.ajax({
+                method: "POST",
+                url: source + 'place/create',
+                enctype: 'multipart/form-data',
+                data: {
+                    'header': token,
+                    'name': $("#nama").val(),
+                    'image': $("#image")[0].files[0],
+                    'location': $("#location").val(),
+                    'fee_local': $("#fee_local").val(),
+                    'fee_inter': $("#fee_inter").val(),
+                },
+                dataType: "Json",
+                success: function(data, textStatus, jqXHR) {
+                    alert('Sukses menambahkan akun')
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    alert('error :' + textStatus);
+                    console.log(errorThrown, textStatus);
+                }
+            })
+        })
+
+
+    })
+</script>
 {% endblock %}
