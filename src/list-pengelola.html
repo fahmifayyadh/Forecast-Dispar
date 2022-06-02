@@ -1,0 +1,101 @@
+{% extends "template.html" %} {% block navbar %} {% include "navbar.html" %} {% endblock %} {% block content %}
+<div class="page-body">
+    <div class="container-fluid">
+        <div class="page-header">
+            <div class="row">
+                <div class="col-6">
+                    <h3>
+                        Data pengelola</h3>
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="index.html"><i data-feather="home"></i></a>
+                        </li>
+                        <li class="breadcrumb-item">Dashboard</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Container-fluid starts-->
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>List data pengelola</h5><span>Data pengelola disini merupakan pengelola wisata yang terdaftar</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead class="thead-dark">
+                                    <th scope="col">ID</th>
+                                    <th scope="col">Nama</th>
+                                    <th scope="col">Email</th>
+                                    <th scope="col">Destinasi</th>
+                                    <th scope="col">lokasi</th>
+                                    <th scope="col">Action</th>
+                                </thead>
+                                <tbody id="pengguna">
+                                    <tr>
+
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Container-fluid Ends-->
+</div>
+{% endblock %} {% block js %} {% include "auth.html" %}
+<script defer src="https://use.fontawesome.com/releases/v6.1.1/js/all.js" integrity="sha384-xBXmu0dk1bEoiwd71wOonQLyH+VpgR1XcDH3rtxrLww5ajNTuMvBdL5SOiFZnNdp" crossorigin="anonymous"></script>
+<script>
+    $(document).ready(() => {
+        var skip = 0;
+        var take = 50;
+        show()
+
+        function show() {
+            $.ajax({
+                method: "get",
+                url: source + 'pic/' + skip + '/' + take,
+                data: {
+                    'header': token
+                },
+                dataType: "Json",
+                success: function(data, textStatus, jqXHR) {
+                    var user = data['pic']
+                    $.each(user, (index, value) => {
+                        var usr = `<tr>
+                                        <td>` + value.pic_id + `</td>
+                                        <td>` + value.username + `</td>
+                                        <td>` + value.email + `</td>
+                                        <td>` + value.name + `</td>
+                                        <td>` + value.location + `</td>
+                                        <td>
+                                            <button id="edit" val="` + value.pic_id + `" class="btn btn-primary text-white"><i class="fa-solid fa-pen"></i></button>
+                                            <button id="delete" val="` + value.pic_id + `" class="btn btn-danger text-white"><i class="fa-solid fa-trash"></i></button>
+                                        </td>
+                                    </tr>`
+                        $("#pengguna").append(usr)
+                    })
+
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    alert('error :' + textStatus);
+                    if (jqXHR.status = 401) {
+                        keluar()
+                    }
+                    console.log(errorThrown);
+
+                }
+            })
+        }
+
+        function edit(id) {
+            window.location.replace('');
+        }
+    })
+</script>
+{% endblock %}

@@ -2,7 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const app = express();
 const path = ([
-    'index', 'login', 'list-wisata', 'tambah-wisata', 'list-pengguna', 'tambah-pengguna',
+    'index', 'login', 'list-wisata', 'tambah-wisata', 'list-pengguna', 'tambah-pengguna', 'list-pengelola', 'tambah-pengelola'
 ]);
 
 app.engine('html', require('ejs').renderFile);
