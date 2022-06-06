@@ -149,9 +149,12 @@
             <div class="row">
                 <div class="col-6">
                     <h3>
-                        Pengelola Wisata</h3>
+                        Laporan kunjungan wisata</h3>
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="index.html"><i data-feather="home"></i></a>
+                        <li class="breadcrumb-item">
+                            <a href="index.html">
+                                <i data-feather="home"></i>
+                            </a>
                         </li>
                         <li class="breadcrumb-item">Dashboard</li>
                     </ol>
@@ -165,28 +168,67 @@
             <div class="col-sm-12">
                 <div class="card">
                     <div class="card-body">
-                        <form id="formulir">
-                            <input type="hidden" name="token" id="token" value="">
-                            <div class="form-group">
-                                <label for="role">Pengguna</label>
-                                <select name="role" id="user" class="form-control" required>
-                                      
-                                    </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="role">Destinasi</label>
-                                <select name="role" id="destinasi" class="form-control" required>
-                                        
-                                    </select>
-                            </div>
-                            <button type="submit" id="submit" class="col-12 btn btn-primary">Simpan</button>
-                        </form>
+                        <h4 class="text-center">Laporan akumulasi pendapatan</small>
+                        </h4>
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead class="thead-dark">
+                                    <th scope="col">destinasi</th>
+                                    <th scope="col">perolehan Wisatawan lokal</th>
+                                    <th scope="col">perolehan Wisatawan manca</th>
+                                    <th scope="col">Total perolehan</th>
+                                </thead>
+                                <tbody id="pengguna">
+                                    <tr></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12">
+                <form action="" method="post" id="search">
+                    <div class="form-group row ">
+                        <input type="text" name="cari" id="search" class="col-9 form-control" placeholder="cari laporan tahunan">
+                        <button type="submit" class="ml-3 align-items-center justify-content-center btn btn-primary col-2 d-flex"><i class="fa-solid fa-magnifying-glass"></i> Cari</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header">
+                    <p class="text-center">Pendapatan akumulasi tahun <span>2021</span> </p>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead class="thead-dark">
+                                <th scope="col">destinasi</th>
+                                <th scope="col">1</th>
+                                <th scope="col">2</th>
+                                <th scope="col">3</th>
+                                <th scope="col">4</th>
+                                <th scope="col">5</th>
+                                <th scope="col">6</th>
+                                <th scope="col">7</th>
+                                <th scope="col">8</th>
+                                <th scope="col">9</th>
+                                <th scope="col">10</th>
+                                <th scope="col">11</th>
+                                <th scope="col">12</th>
+                            </thead>
+                            <tbody id="pengguna">
+                                <tr></tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <!-- Container-fluid Ends-->
+</div>
+<!-- Container-fluid Ends-->
 </div>
 
             <!-- footer start-->
@@ -247,70 +289,25 @@
 </script>
 <script>
     $(document).ready(() => {
-        $.ajax({
-                method: "get",
-                url: source + 'user/0/500',
-                dataType: "Json",
-                data: {
-                    'header': token
-                    },
-                success: function(data, textStatus, jqXHR) {
-                    var user = data['user']
-                    $.each(user, (index, users)=>{
-                        var listuser = `<option value="`+users.id+`">`+users.username+` - `+users.email+`</option>`;
-                        $('#user').append(listuser)
-                    })
-                },
-                error: function(jqXHR, textStatus, errorThrown) {
-                    alert('error :' + textStatus);
-                    console.log(errorThrown, textStatus);
-                }
-            })
-
-        $.ajax({
-                method: "get",
-                url: source + 'place/0/500',
-                data: {
-                    'header': token
-                    },
-                dataType: "Json",
-                success: function(data, textStatus, jqXHR) {
-                    var destinasi = data['data']
-                    $.each(destinasi, (index, destinasis)=>{
-                        var listdestinasi = `<option value="`+destinasis.id+`">`+destinasis.name+` - `+destinasis.location+`</option>`;
-                        $('#destinasi').append(listdestinasi)
-                    })
-                },
-                error: function(jqXHR, textStatus, errorThrown) {
-                    alert('error :' + textStatus);
-                    console.log(errorThrown, textStatus);
-                }
-            })
-
-        $("#token").val(token);
-
-        $("form#formulir").submit((e) => {
-            e.preventDefault()
-            $.ajax({
-                method: "POST",
-                url: source + 'pic/create',
-                data: {
-                    'header': token,
-                    'user_id': $("#user").val(),
-                    'place_id': $("#destinasi").val()
-                },
-                dataType: "Json",
-                success: function(data, textStatus, jqXHR) {
-                    alert('Sukses menambahkan akun')
-                    window.location.replace('/list-pengelola.html')
-                },
-                error: function(jqXHR, textStatus, errorThrown) {
-                    alert('error :' + textStatus);
-                    console.log(errorThrown, textStatus);
-                }
-            })
-        })
-
+        // $.ajax({
+        //     method: "get",
+        //     url: source + 'user/0/500',
+        //     dataType: "Json",
+        //     data: {
+        //         'header': token
+        //     },
+        //     success: function(data, textStatus, jqXHR) {
+        //         var user = data['user']
+        //         $.each(user, (index, users) => {
+        //             var listuser = `<option value="` + users.id + `">` + users.username + ` - ` + users.email + `</option>`;
+        //             $('#user').append(listuser)
+        //         })
+        //     },
+        //     error: function(jqXHR, textStatus, errorThrown) {
+        //         alert('error :' + textStatus);
+        //         console.log(errorThrown, textStatus);
+        //     }
+        // })
 
     })
 </script>

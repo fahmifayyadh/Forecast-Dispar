@@ -1,0 +1,59 @@
+{% extends "template.html" %} {% block navbar %} {% include "navbar.html" %} {% endblock %} {% block content %}
+<div class="page-body">
+    <div class="container-fluid">
+        <div class="page-header">
+            <div class="row">
+                <div class="col-6">
+                    <h3>
+                        Grafik Kunjungan</h3>
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="index.html"><i data-feather="home"></i></a>
+                        </li>
+                        <li class="breadcrumb-item">Dashboard</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Container-fluid starts-->
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-body">
+                        <canvas id="myChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!-- Container-fluid Ends-->
+</div>
+{% endblock %} {% block js %} {% include "auth.html" %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.8.0/chart.js"></script>
+
+<!-- chart -->
+<script>
+    var canvas = document.getElementById('myChart');
+    new Chart(canvas, {
+        type: 'line',
+        data: {
+            labels: ['Jan 2020', 'Feb 2020', 'Mar 2020', 'Apr 2020', 'May 2020', 'Jun 2020', 'Jul 2020'],
+            datasets: [{
+                label: 'Kunjungan',
+                // yAxisID: 'A',
+                data: [822022, 373231, 441072, 768753, 345669],
+                backgroundColor: 'rgb(255, 99, 132)',
+                borderColor: 'rgba(255, 99, 132, 0.2)',
+            }, {
+                label: 'Peramalan',
+                // yAxisID: 'B',
+                data: [824022, 372231, 431072, 768453, 347669, 377669, 547669],
+                backgroundColor: 'rgb(122, 99, 255)',
+                borderColor: 'rgba(102, 99, 255, 0.2)',
+            }]
+        },
+    });
+</script>
+{% endblock %}
