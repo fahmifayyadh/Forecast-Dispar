@@ -149,12 +149,9 @@
             <div class="row">
                 <div class="col-6">
                     <h3>
-                        Laporan kunjungan wisata</h3>
+                        Grafik Pendapatan</h3>
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item">
-                            <a href="index.html">
-                                <i data-feather="home"></i>
-                            </a>
+                        <li class="breadcrumb-item"><a href="index.html"><i data-feather="home"></i></a>
                         </li>
                         <li class="breadcrumb-item">Dashboard</li>
                     </ol>
@@ -168,67 +165,39 @@
             <div class="col-sm-12">
                 <div class="card">
                     <div class="card-body">
-                        <h4 class="text-center">Laporan akumulasi pendapatan</small>
-                        </h4>
-                        <div class="table-responsive">
-                            <table class="table table-hover">
-                                <thead class="thead-dark">
-                                    <th scope="col">destinasi</th>
-                                    <th scope="col">perolehan Wisatawan lokal</th>
-                                    <th scope="col">perolehan Wisatawan manca</th>
-                                    <th scope="col">Total perolehan</th>
-                                </thead>
-                                <tbody id="pengguna">
-                                    <tr></tr>
-                                </tbody>
-                            </table>
+                        <div class="text-center text-bold">GRAFIK PENDAPATAN TOTAL</div>
+                        <h4 class="text-center"></h4>
+                        <canvas id="myChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h6 class="text-center">PENDAPATAN DESTINASI WISATA X</h6>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <p class="text-center">Pendapatan</p>
+                                <canvas id="mostlocal1"></canvas>
+                            </div>
+                            <div class="col-sm-4">
+                                <p class="text-center">Lokal vs Manca tahun ini</p>
+                                <canvas id="mancalocal1"></canvas>
+                            </div>
+                            <div class="col-sm-2">
+                                <p class="text-center">Prosentase sumbang pendapatan tahun ini</p>
+                                <div class="knob-block text-center">
+                                    <input class="knob1" data-width="10" data-height="70" data-thickness=".3" data-angleoffset="0" data-linecap="round" data-fgcolor="#7366ff" data-bgcolor="#eef5fb" value="20">
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-12">
-                <form action="" method="post" id="search">
-                    <div class="form-group row ">
-                        <input type="text" name="cari" id="search" class="col-9 form-control" placeholder="cari laporan tahunan">
-                        <button type="submit" class="ml-3 align-items-center justify-content-center btn btn-primary col-2 d-flex"><i class="fa-solid fa-magnifying-glass"></i> Cari</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-        <div class="col-sm-12">
-            <div class="card">
-                <div class="card-header">
-                    <p class="text-center">Pendapatan akumulasi tahun <span>2021</span> </p>
-                </div>
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-hover">
-                            <thead class="thead-dark">
-                                <th scope="col">destinasi</th>
-                                <th scope="col">1</th>
-                                <th scope="col">2</th>
-                                <th scope="col">3</th>
-                                <th scope="col">4</th>
-                                <th scope="col">5</th>
-                                <th scope="col">6</th>
-                                <th scope="col">7</th>
-                                <th scope="col">8</th>
-                                <th scope="col">9</th>
-                                <th scope="col">10</th>
-                                <th scope="col">11</th>
-                                <th scope="col">12</th>
-                            </thead>
-                            <tbody id="pengguna">
-                                <tr></tr>
-                            </tbody>
-                        </table>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-<!-- Container-fluid Ends-->
+    <!-- Container-fluid Ends-->
 </div>
 
             <!-- footer start-->
@@ -287,29 +256,53 @@
         })
     });
 </script>
-<script>
-    $(document).ready(() => {
-        // $.ajax({
-        //     method: "get",
-        //     url: source + 'user/0/500',
-        //     dataType: "Json",
-        //     data: {
-        //         'header': token
-        //     },
-        //     success: function(data, textStatus, jqXHR) {
-        //         var user = data['user']
-        //         $.each(user, (index, users) => {
-        //             var listuser = `<option value="` + users.id + `">` + users.username + ` - ` + users.email + `</option>`;
-        //             $('#user').append(listuser)
-        //         })
-        //     },
-        //     error: function(jqXHR, textStatus, errorThrown) {
-        //         alert('error :' + textStatus);
-        //         console.log(errorThrown, textStatus);
-        //     }
-        // })
+<script src="assets/js/chart/knob/knob-chart.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.8.0/chart.js"></script>
 
-    })
+<!-- chart -->
+<script>
+    var canvas = document.getElementById('myChart');
+
+    new Chart(canvas, {
+        type: 'line',
+        data: {
+            labels: ['Jan 2020', 'Feb 2020', 'Mar 2020', 'Apr 2020', 'May 2020', 'Jun 2020', 'Jul 2020'],
+            datasets: [{
+                label: 'Lokal',
+                // yAxisID: 'A',
+                data: [822022, 373231, 441072, 768753, 345669],
+                backgroundColor: 'rgb(255, 99, 132)',
+                borderColor: 'rgba(255, 99, 132, 0.2)',
+            }, {
+                label: 'Manca',
+                // yAxisID: 'B',
+                data: [824022, 372231, 431072, 768453, 347669, 377669, 547669],
+                backgroundColor: 'rgb(122, 99, 255)',
+                borderColor: 'rgba(102, 99, 255, 0.2)',
+            }, {
+                label: 'Total',
+                // yAxisID: 'B',
+                data: [8024022, 3072231, 4031072, 7680453, 3470669, 3770669, 5470669],
+                backgroundColor: '#3e95cd',
+                borderColor: 'rgba(102, 99, 255, 0.2)',
+            }]
+        },
+    });
+
+    new Chart($("#mancalocal1"), {
+        type: 'pie',
+        data: {
+            labels: ['local', 'mancanegara'],
+            datasets: [{
+                label: 'Lokasi pengunjung',
+                // yAxisID: 'A',
+                data: [822022, 373231],
+                backgroundColor: ["#3e95cd", "#8e5ea2"],
+                borderColor: 'rgba(255, 99, 132, 0.2)',
+
+            }]
+        },
+    });
 </script>
 
     <!-- Plugins JS Ends-->
